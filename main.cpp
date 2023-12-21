@@ -44,7 +44,7 @@ compare with original algorithm
 int loops = 1000;
 int idx1 = 0;
 int idx2 = 0;
-bool serial = false;
+bool synchronous = false;
 bool exhaustive = true;
 bool test = true;
 int STR_LENGTH = 15;
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 	}
 	*/
 
-    if (serial) {
+    if (synchronous) {
         int numStates = current->GetNumStates();
 		// random search
         if (!exhaustive) { 
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
             }
         }
     }
-    else if (!serial) {
+    else if (!synchronous) {
 		GenSolution solution;
 		std::cout << "initializing" << std::endl;
 		// multithreaded exhaustive search

@@ -8,7 +8,7 @@ class GenSolution
 {
 private:
 	std::mutex mtx;
-	const int nThreads = 16;
+	const int nThreads = 15;
 public:
 	//static double FindSolution();
 	GenSolution() = default;

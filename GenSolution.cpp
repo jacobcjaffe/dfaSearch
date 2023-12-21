@@ -10,6 +10,7 @@
 #include<thread>
 
 using namespace sciplot;
+
 // method to generate the base case
 void GenSolution::GenerateGenericTest(std::string fileName, int lengthStr, int numStates) {
 	if (lengthStr % 2 != 1) {
@@ -130,7 +131,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 	dfa* temp = new dfa();
 	temp->fromFile("test.txt");
 
-	for (int testNum = 1; testNum < (2.5 * (double)numStates); testNum+=2) {
+	for (int testNum = 3; testNum < 4 * numStates; testNum+=2) {
 		x.push_back(testNum);
 		std::cout << "lengthStr: " << testNum << std::endl;
 		GenerateGenericTest("test.txt", testNum, numStates);
@@ -200,8 +201,10 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 				std::printf("we found one \n");
 				//std::cout << maxPtr->PrintTransitionTable();
 				out << itr << "\n";
-				out << std::setprecision(15) << maxPtr->GetNumCorrectStrings() << "\n";
-				out << std::setprecision(15) << maxPtr->GetNumCorrectStrings() / std::pow(2, testNum) << "\n";
+				out << std::setprecision(15) <<
+					maxPtr->GetNumCorrectStrings() << "\n";
+				out << std::setprecision(15)
+					<< maxPtr->GetNumCorrectStrings() / std::pow(2, testNum) << "\n";
 				out << maxPtr->PrintAcceptingStates() << "\n";
 				out << maxPtr->PrintTransitionTable();
 				out << "\n--------------------------------------------\n\n";
@@ -211,7 +214,8 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		}
 		std::cout << "Ending DFA: ";
 		std::cout << std::setprecision(15) << current->GetNumCorrectStrings() << "\n";
-		std::cout << std::setprecision(15) << current->GetNumCorrectStrings() / std::pow(2, testNum) << "\n";
+		std::cout << std::setprecision(15) <<
+			current->GetNumCorrectStrings() / std::pow(2, testNum) << "\n";
 		std::cout << "Number of steps: " << count << "\n";
 		std::cout << current->PrintAcceptingStates();
 		std::cout << current->PrintTransitionTable();
@@ -219,7 +223,8 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		count = 0;
 		out << "Ending DFA: ";
 		out << std::setprecision(15) << current->GetNumCorrectStrings() << "\n";
-		out << std::setprecision(15) << current->GetNumCorrectStrings() / std::pow(2, testNum) << "\n";
+		out << std::setprecision(15) <<
+			current->GetNumCorrectStrings() / std::pow(2, testNum) << "\n";
 		out << "Number of steps: " << count << "\n";
 		out << current->PrintAcceptingStates();
 		out << current->PrintTransitionTable();
@@ -227,7 +232,8 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		count = 0;
 		y.push_back(current->GetNumCorrectStrings() / std::pow(2, testNum));
 	}
-	std::string title = "Ratio of Correctly Identified Strings With Constant " + std::to_string(numStates) 
+	std::string title = "Ratio of Correctly Identified Strings With Constant "
+		+ std::to_string(numStates) 
 		+ " States";
 	std::cout << title << std::endl;
 	PlotResults(x, y, title);

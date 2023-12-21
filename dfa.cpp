@@ -1,4 +1,5 @@
 #include "dfa.h"
+#include <gmp.h>
 #include<string>
 #include<queue>
 #include<tuple>
@@ -74,8 +75,8 @@ std::tuple<double, double, double> dfa::CalculateNumCorrect()
 {
 	// reset to 0
 	for (int i = 0; i < numStates; i++) {
-		for (int k = 0; k < lengthStr; k++) {
-			for (int j = 0; j < lengthStr; j++) {
+		for (int k = 0; k <= lengthStr; k++) {
+			for (int j = 0; j <= lengthStr; j++) {
 				tableAcceptedStr[i][k][j] = 0;
 			}
 		}
@@ -83,9 +84,18 @@ std::tuple<double, double, double> dfa::CalculateNumCorrect()
 		
     // format: tableAcceptedStr[state][string length][number of 1's]
     // initialize for empty string
+	if (debug){
+		std::cout << "    Accepting States ";
+	}
     for (int i = 0; i < numAcceptingStates; i++) {
         tableAcceptedStr[acceptingStates[i]][0][0] = 1;
+		if (debug) {
+			std::cout << acceptingStates[i];
+		}
     }
+	if (debug) {
+		std::cout << std::endl;
+	}
 
     // build up to a solution
     for (int numOnes = 0; numOnes <= lengthStr; numOnes++) {
@@ -121,6 +131,10 @@ std::tuple<double, double, double> dfa::CalculateNumCorrect()
     }
 
     numCorrectlyIdentified = numCorrect;
+	if (debug) {
+		std::printf("CALC numCorrect: %f, numCorrectlyAcc: %f, numIncorrectlyAcc: %f\n", 
+			numCorrect, numCorrectlyAcc, numIncorrectlyAcc);
+	}
     return std::make_tuple(numCorrect, numCorrectlyAcc, numIncorrectlyAcc);
 }
 
@@ -162,7 +176,8 @@ double dfa::OptimizeAcceptingStates(){
 		this->acceptingStates.clear();
 		this->acceptingStates.push_back(i);
 		std::tie(numCorrect, numCorrectlyAccepted, numIncorrectlyAccepted) = CalculateNumCorrect();
-		std::cout << numCorrectlyAccepted << " " << numIncorrectlyAccepted << std::endl;
+		std::printf("State: %d, NumCorrectlyAccepted: %f, numIncorrectlyAccepted %f\n", 
+				i, numCorrectlyAccepted, numIncorrectlyAccepted);
 		// if number correctly accepted exceeds number incorrectly accepted
 		if (numCorrectlyAccepted >= numIncorrectlyAccepted) {
 			/*

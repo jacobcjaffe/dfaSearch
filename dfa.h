@@ -20,6 +20,7 @@ private:
 
     std::string fileName;
     double numCorrectlyIdentified = 0;
+	bool debug = false;
 
 public :
     dfa();
