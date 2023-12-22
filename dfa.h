@@ -5,13 +5,28 @@
 #include<fstream>
 #include<vector>
 #include "BitVector.h"
+#include<gmp.h>
+
+class CalcResults {
+	public:
+		CalcResults() {};
+		mpz_t Correct;
+		mpz_t CorrectlyAcc;
+		mpz_t IncorrectlyAcc;
+		
+		~CalcResults() {
+			mpz_clear(Correct);
+			mpz_clear(CorrectlyAcc);
+			mpz_clear(IncorrectlyAcc);
+		};
+};
 
 // a class to define the dfa and the methods that act on it
 class dfa 
 {
 private:
     // nextState = transitiontable[alphabet][currentstate]
-    double*** tableAcceptedStr = nullptr;
+    mpz_t*** tableAcceptedStr = nullptr;
     int** transitionTable = new int*[2];
     int numStates = -1;
 	std::vector<int> acceptingStates;
@@ -19,7 +34,7 @@ private:
     int lengthStr = 0;
 
     std::string fileName;
-    double numCorrectlyIdentified = 0;
+    double numCorrectlyIdentified;
 	bool debug = false;
 
 public :
@@ -27,7 +42,7 @@ public :
     // pull definition from input text file
     void fromFile(std::string path);
 
-	std::tuple<double, double, double> CalculateNumCorrect();
+	CalcResults* CalculateNumCorrect();
     double CalculateNumCorrectBrute();
 	double OptimizeAcceptingStates();
     bool CheckMembership(std::vector<bool> &bits);
@@ -64,5 +79,6 @@ public :
 
     ~dfa();
 };
+
 
 #endif

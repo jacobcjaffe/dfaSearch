@@ -139,6 +139,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		current->fromFile("test.txt");
 		itr = 0;
 		current->OptimizeAcceptingStates();
+		//return;
 		// print starting point
 		out << "Starting DFA: " << current->GetNumCorrectStrings() << "\n";
 		out << current->PrintAcceptingStates();
@@ -231,6 +232,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		out << "\n\n--------------------------------------------\n\n";
 		count = 0;
 		y.push_back(current->GetNumCorrectStrings() / std::pow(2, testNum));
+		std::cout << "    FINAL" << current->GetNumCorrectStrings() << std::endl;
 	}
 	std::string title = "Ratio of Correctly Identified Strings With Constant "
 		+ std::to_string(numStates) 
@@ -248,6 +250,17 @@ void GenSolution::PlotResults(std::vector<double>& x, std::vector<double>& y, st
 	plot.yrange(0.0, 1.0);
 	plot.xrange((int)0, x.back());
 	plot.drawCurveWithPoints(x, y);
+
+	std::ofstream table("table.txt");
+	table << t << std::endl;
+	for (int i = 0; i < x.size(); i++) {
+		table << x[i] << " ";
+	}
+	table << std::endl;
+	for (int j = 0; j < y.size(); j++) {
+		table << y[j] << " ";
+	}
+	table << std::endl;
 
 	Figure fig = {{plot}};
 	fig.title(t);

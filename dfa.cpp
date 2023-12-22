@@ -49,14 +49,17 @@ void dfa::fromFile(std::string path)
             in >> transitionTable[1][i];
         }
 
+		if (debug) {
+			std::cout << "allocating for tableAccepted" << std::endl;
+		}
         // initialize table to calculate the number of accepted string
-        tableAcceptedStr = new double** [numStates];
+        tableAcceptedStr = new mpz_t** [numStates];
         for (int i = 0; i < numStates; i++) {
-            tableAcceptedStr[i] = new double* [lengthStr + 1];
+            tableAcceptedStr[i] = new mpz_t* [lengthStr + 1];
             for (int j = 0; j < lengthStr + 1; j++) {
-                tableAcceptedStr[i][j] = new double[lengthStr + 1];
+                tableAcceptedStr[i][j] = new mpz_t[lengthStr + 1];
                 for (int k = 0; k < lengthStr + 1; k++) {
-                    tableAcceptedStr[i][j][k] = 0;
+                    mpz_init(tableAcceptedStr[i][j][k]);
                 }
             }
         }
@@ -71,13 +74,14 @@ void dfa::fromFile(std::string path)
 /// Calculates the number of correctly accepted strings and correctly rejected strings of size lengthStr.
 /// </summary>
 /// <returns></returns>
-std::tuple<double, double, double> dfa::CalculateNumCorrect()
+CalcResults* dfa::CalculateNumCorrect()
 {
 	// reset to 0
 	for (int i = 0; i < numStates; i++) {
 		for (int k = 0; k <= lengthStr; k++) {
 			for (int j = 0; j <= lengthStr; j++) {
-				tableAcceptedStr[i][k][j] = 0;
+				mpz_clear(tableAcceptedStr[i][k][j]);
+				mpz_init(tableAcceptedStr[i][k][j]);
 			}
 		}
 	}
@@ -88,7 +92,8 @@ std::tuple<double, double, double> dfa::CalculateNumCorrect()
 		std::cout << "    Accepting States ";
 	}
     for (int i = 0; i < numAcceptingStates; i++) {
-        tableAcceptedStr[acceptingStates[i]][0][0] = 1;
+        mpz_add_ui(tableAcceptedStr[acceptingStates[i]][0][0],
+				tableAcceptedStr[acceptingStates[i]][0][0], 1);
 		if (debug) {
 			std::cout << acceptingStates[i];
 		}
@@ -103,39 +108,62 @@ std::tuple<double, double, double> dfa::CalculateNumCorrect()
             for (int currentState = 0; currentState < numStates; currentState++) {
                 int state_on_zero = transitionTable[0][currentState];
                 int state_on_one = transitionTable[1][currentState];
-                tableAcceptedStr[currentState][currentLength][numOnes] +=
-					tableAcceptedStr[state_on_zero][currentLength - 1][numOnes];
+                mpz_add(tableAcceptedStr[currentState][currentLength][numOnes],
+						tableAcceptedStr[currentState][currentLength][numOnes],
+					tableAcceptedStr[state_on_zero][currentLength - 1][numOnes]);
                 if (numOnes != 0 && currentLength != 0) {
-                    tableAcceptedStr[currentState][currentLength][numOnes] +=
-						tableAcceptedStr[state_on_one][currentLength - 1][numOnes - 1];
+                    mpz_add(tableAcceptedStr[currentState][currentLength][numOnes],
+						tableAcceptedStr[currentState][currentLength][numOnes],
+						tableAcceptedStr[state_on_one][currentLength - 1][numOnes - 1]);
                 }
             }
         }
     }
 
 
-    double numCorrect = 0;
-	double numCorrectlyAcc = 0;
-	double numIncorrectlyAcc = 0;
+	if (debug) {
+		std::cout << "retrieving data" << std::endl;
+	}
+	mpz_t numCorrect;
+	mpz_t numCorrectlyAcc;
+	mpz_t numIncorrectlyAcc;
+	mpz_t power, two;
+	mpz_inits(numCorrect, numCorrectlyAcc, numIncorrectlyAcc, power, two, NULL);
     // SUM(count[start][length n][number of ones from n/2+1 to n]
     for (int i = lengthStr / 2 + 1; i <= lengthStr; i++) {
-        numCorrect += tableAcceptedStr[0][lengthStr][i];
-		numCorrectlyAcc += tableAcceptedStr[0][lengthStr][i];
+        mpz_add(numCorrect, numCorrect, tableAcceptedStr[0][lengthStr][i]);
+		mpz_add(numCorrectlyAcc, numCorrectlyAcc, tableAcceptedStr[0][lengthStr][i]);
     }
+	if (debug) {
+		std::cout << "calculating power of two" << std::endl;
+	}
+
     // there are half of all possible strings that should be rejected
-    numCorrect += pow(2, lengthStr - 1);
+	mpz_add_ui(two, two, 2);
+	mpz_pow_ui(power, two, lengthStr - 1);
+	//std::cout << "        POWER " << mpz_get_d(power) << std::endl;
+	mpz_add(numCorrect, numCorrect, power);
     // subtract amount accepted that should have been rejected
     for (int i = 1; i < (lengthStr / 2 + 1); i++) {
-        numCorrect -= tableAcceptedStr[0][lengthStr][i];
-		numIncorrectlyAcc += tableAcceptedStr[0][lengthStr][i];
+        //numCorrect -= tableAcceptedStr[0][lengthStr][i];
+		mpz_sub(numCorrect, numCorrect, tableAcceptedStr[0][lengthStr][i]);
+		//numIncorrectlyAcc += tableAcceptedStr[0][lengthStr][i];
+		mpz_add(numIncorrectlyAcc, numIncorrectlyAcc,
+			tableAcceptedStr[0][lengthStr][i]);
     }
 
-    numCorrectlyIdentified = numCorrect;
+    numCorrectlyIdentified = mpz_get_d(numCorrect);
 	if (debug) {
 		std::printf("CALC numCorrect: %f, numCorrectlyAcc: %f, numIncorrectlyAcc: %f\n", 
-			numCorrect, numCorrectlyAcc, numIncorrectlyAcc);
+			mpz_get_d(numCorrect), mpz_get_d(numCorrectlyAcc),
+			mpz_get_d(numIncorrectlyAcc));
 	}
-    return std::make_tuple(numCorrect, numCorrectlyAcc, numIncorrectlyAcc);
+	mpz_clears(/*numCorrect, numCorrectlyAcc, numIncorrectlyAcc,*/ two, power, NULL);
+	CalcResults* results = new CalcResults();
+	*results->Correct = *numCorrect;
+	*results->CorrectlyAcc = *numCorrectlyAcc;
+	*results->IncorrectlyAcc = *numIncorrectlyAcc;
+    return results;
 }
 
 // brute force check the number of accepted strings of length lengthStr
@@ -175,17 +203,21 @@ double dfa::OptimizeAcceptingStates(){
 	for(int i = 0; i < numStates; i++) {
 		this->acceptingStates.clear();
 		this->acceptingStates.push_back(i);
-		std::tie(numCorrect, numCorrectlyAccepted, numIncorrectlyAccepted) = CalculateNumCorrect();
-		std::printf("State: %d, NumCorrectlyAccepted: %f, numIncorrectlyAccepted %f\n", 
-				i, numCorrectlyAccepted, numIncorrectlyAccepted);
+		CalcResults* output = CalculateNumCorrect();
+		if (debug) {
+			std::printf("State: %d, NumCorrectlyAccepted: %f, numIncorrectlyAccepted %f\n", 
+					i, mpz_get_d(output->CorrectlyAcc), 
+					mpz_get_d(output->IncorrectlyAcc));
+		}
 		// if number correctly accepted exceeds number incorrectly accepted
-		if (numCorrectlyAccepted >= numIncorrectlyAccepted) {
+		if (mpz_cmp(output->CorrectlyAcc, output->IncorrectlyAcc) >= 0) {
 			/*
 			std::printf("numCorrectlyAccepted: %f numIncorrectlyAccepted: %f", 
 					numCorrectlyAccepted, numIncorrectlyAccepted);
 			*/
 			localAcceptingStates.push_back(i);
 		}
+		delete output;
 	}
 	acceptingStates.clear();
 	numAcceptingStates = 0;
@@ -196,9 +228,10 @@ double dfa::OptimizeAcceptingStates(){
 		numAcceptingStates++;
 	}
 	this->numAcceptingStates = this->acceptingStates.size();
-	std::tie(numCorrect, numCorrectlyAccepted, numIncorrectlyAccepted) = this->CalculateNumCorrect();
-	numCorrectlyIdentified = numCorrect;
-	return numCorrect;
+	CalcResults* results = this->CalculateNumCorrect();
+	numCorrectlyIdentified = mpz_get_d(results->Correct);
+	delete results;
+	return numCorrectlyIdentified;
 }
 
 // checks the membership of the string
@@ -452,13 +485,13 @@ void dfa::SetTableAccepted(int newNumStates, int newLengthStr) {
     }
 
 	// initialize table to calculate the number of accepted string
-	tableAcceptedStr = new double** [newNumStates];
+	tableAcceptedStr = new mpz_t** [newNumStates];
 	for (int i = 0; i < newNumStates; i++) {
-		tableAcceptedStr[i] = new double* [newLengthStr + 1];
+		tableAcceptedStr[i] = new mpz_t* [newLengthStr + 1];
 		for (int j = 0; j <= newLengthStr; j++) {
-			tableAcceptedStr[i][j] = new double[newLengthStr + 1];
+			tableAcceptedStr[i][j] = new mpz_t[newLengthStr + 1];
 			for (int k = 0; k <= newLengthStr; k++) {
-				tableAcceptedStr[i][j][k] = 0;
+				mpz_init(tableAcceptedStr[i][j][k]);
 			}
 		}
 	}
@@ -487,6 +520,15 @@ dfa::~dfa()
             delete transitionTable[i];
         }
     }
+	// TODO: look at how to delete here
+	for(int i = numStates; i < numStates; i++) {
+		for (int j = 0; j <= lengthStr; j++) {
+			for (int k = 0; k <= lengthStr; k++) {
+				mpz_clear(tableAcceptedStr[i][j][k]);
+			}
+		}
+	}
+
     if (tableAcceptedStr != nullptr) {
         for (int i = 0; i < numStates; i++) {
             for (int j = 0; j < lengthStr; j++) {

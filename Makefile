@@ -8,7 +8,7 @@ OBJECTS = main.o dfa.o GenSolution.o
 
 STD = -std=c++20
 OPTIMIZER = -O3
-CFLAGS = $(STD) -Wall -g $(OPTIMIZER)
+CFLAGS = $(STD) -Wall -g $(OPTIMIZER) -lgmpxx -lgmp
 
 main: $(OBJECTS) 
 	$(CC) $(CFLAGS) -o main $(OBJECTS)

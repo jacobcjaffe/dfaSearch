@@ -56,7 +56,6 @@ int NUM_TESTS = 4;
 // iteratoins until local maximum, and success ratio, how does it grow
 // from the application point of view, where should we stop
 std::mutex idxLock;
-int nThreads = 15;
 
 int main(int argc, char** argv) {
 	std::cout << "hi" << std::endl;
@@ -112,8 +111,10 @@ int main(int argc, char** argv) {
         if (!exhaustive) { 
             for (int i = 0; i < loops; i++) {
                 for (int j = 0; j < loops; j++) {
-                    GenSolution::CopyDFAAndCalculate(current, (i * loops) + j, dist(rng), dist(rng), 0, maxDFA);
-                    GenSolution::CopyDFAAndCalculate(current, (i * loops) + j, dist(rng), dist(rng), 1, maxDFA);
+                    GenSolution::CopyDFAAndCalculate(current, (i * loops) + j,
+							dist(rng), dist(rng), 0, maxDFA);
+                    GenSolution::CopyDFAAndCalculate(current, (i * loops) + j,
+							dist(rng), dist(rng), 1, maxDFA);
                 }
                 if (!dfaVec.empty()) {
                     // linearly search for max size
@@ -166,7 +167,7 @@ int main(int argc, char** argv) {
             }
         }
     }
-    else if (!synchronous) {
+    else {
 		GenSolution solution;
 		std::cout << "initializing" << std::endl;
 		// multithreaded exhaustive search
