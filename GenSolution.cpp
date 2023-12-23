@@ -131,7 +131,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 	dfa* temp = new dfa();
 	temp->fromFile("test.txt");
 
-	for (int testNum = 3; testNum < 4 * numStates; testNum+=2) {
+	for (int testNum = 3; testNum < 4.5 * numStates; testNum+=2) {
 		x.push_back(testNum);
 		std::cout << "lengthStr: " << testNum << std::endl;
 		GenerateGenericTest("test.txt", testNum, numStates);
@@ -142,6 +142,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		//return;
 		// print starting point
 		out << "Starting DFA: " << current->GetNumCorrectStrings() << "\n";
+		out << "Length String: " << testNum << "\n";
 		out << current->PrintAcceptingStates();
 		out << current->PrintTransitionTable();
 		while(true) {

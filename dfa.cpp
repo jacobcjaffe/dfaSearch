@@ -144,7 +144,7 @@ CalcResults* dfa::CalculateNumCorrect()
 	//std::cout << "        POWER " << mpz_get_d(power) << std::endl;
 	mpz_add(numCorrect, numCorrect, power);
     // subtract amount accepted that should have been rejected
-    for (int i = 1; i < (lengthStr / 2 + 1); i++) {
+    for (int i = 0; i < (lengthStr / 2 + 1); i++) {
         //numCorrect -= tableAcceptedStr[0][lengthStr][i];
 		mpz_sub(numCorrect, numCorrect, tableAcceptedStr[0][lengthStr][i]);
 		//numIncorrectlyAcc += tableAcceptedStr[0][lengthStr][i];

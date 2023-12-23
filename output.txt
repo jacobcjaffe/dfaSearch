@@ -1,5 +1,6 @@
 Starting DFA: 8
-10 accepting state(s): 0 1 2 3 4 5 7 8 9 10 
+Length String: 3
+9 accepting state(s): 0 1 2 3 4 5 7 9 10 
 
 The Transition Table
  	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
@@ -9,7 +10,7 @@ The Transition Table
 Ending DFA: 8
 1
 Number of steps: 0
-10 accepting state(s): 0 1 2 3 4 5 7 8 9 10 
+9 accepting state(s): 0 1 2 3 4 5 7 9 10 
 
 The Transition Table
  	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
@@ -21,7 +22,8 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 32
-9 accepting state(s): 0 1 2 3 4 5 7 9 10 
+Length String: 5
+8 accepting state(s): 0 1 2 3 4 5 7 9 
 
 The Transition Table
  	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
@@ -31,7 +33,7 @@ The Transition Table
 Ending DFA: 32
 1
 Number of steps: 0
-9 accepting state(s): 0 1 2 3 4 5 7 9 10 
+8 accepting state(s): 0 1 2 3 4 5 7 9 
 
 The Transition Table
  	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
@@ -43,6 +45,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 128
+Length String: 7
 7 accepting state(s): 0 1 2 3 4 5 7 
 
 The Transition Table
@@ -65,6 +68,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 512
+Length String: 9
 6 accepting state(s): 0 1 2 3 4 5 
 
 The Transition Table
@@ -87,6 +91,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 2047
+Length String: 11
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -109,6 +114,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 8177
+Length String: 13
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -131,6 +137,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 32631
+Length String: 15
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -153,6 +160,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 130084
+Length String: 17
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -175,6 +183,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 518092
+Length String: 19
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -197,6 +206,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 2061708
+Length String: 21
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -233,6 +243,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 8198534
+Length String: 23
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -269,6 +280,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 32582420
+Length String: 25
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -305,6 +317,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 129423480
+Length String: 27
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -341,6 +354,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 513883074
+Length String: 29
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -377,6 +391,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 2039719525
+Length String: 31
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -413,6 +428,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 8093937967
+Length String: 33
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -449,6 +465,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 32111201867
+Length String: 35
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -485,6 +502,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 127373992138
+Length String: 37
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -521,6 +539,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 505183947075
+Length String: 39
 5 accepting state(s): 1 2 3 4 5 
 
 The Transition Table
@@ -571,6 +590,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 2004517974101
+Length String: 41
 4 accepting state(s): 1 3 4 5 
 
 The Transition Table
@@ -621,6 +641,7 @@ The Transition Table
 --------------------------------------------
 
 Starting DFA: 7954506446772
+Length String: 43
 4 accepting state(s): 1 3 4 5 
 
 The Transition Table
@@ -664,6 +685,75 @@ Number of steps: 0
 The Transition Table
  	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
 0	6	|	0	|	1	|	2	|	3	|	4	|	7	|	8	|	10	|	10	|	10	|	
+1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
+
+
+
+--------------------------------------------
+
+Starting DFA: 31565585989781
+Length String: 45
+4 accepting state(s): 1 3 4 5 
+
+The Transition Table
+ 	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
+0	6	|	0	|	1	|	2	|	3	|	5	|	7	|	8	|	9	|	10	|	10	|	
+1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
+
+Ending DFA: 31565585989781
+0.897147913001987
+Number of steps: 0
+4 accepting state(s): 1 3 4 5 
+
+The Transition Table
+ 	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
+0	6	|	0	|	1	|	2	|	3	|	5	|	7	|	8	|	9	|	10	|	10	|	
+1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
+
+
+
+--------------------------------------------
+
+Starting DFA: 125260926664701
+Length String: 47
+4 accepting state(s): 1 3 4 5 
+
+The Transition Table
+ 	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
+0	6	|	0	|	1	|	2	|	3	|	5	|	7	|	8	|	9	|	10	|	10	|	
+1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
+
+Ending DFA: 125260926664701
+0.890032415161819
+Number of steps: 0
+4 accepting state(s): 1 3 4 5 
+
+The Transition Table
+ 	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
+0	6	|	0	|	1	|	2	|	3	|	5	|	7	|	8	|	9	|	10	|	10	|	
+1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
+
+
+
+--------------------------------------------
+
+Starting DFA: 497074640559268
+Length String: 49
+4 accepting state(s): 1 3 4 5 
+
+The Transition Table
+ 	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
+0	6	|	0	|	1	|	2	|	3	|	5	|	7	|	8	|	9	|	10	|	10	|	
+1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
+
+Ending DFA: 497074640559268
+0.882981937449877
+Number of steps: 0
+4 accepting state(s): 1 3 4 5 
+
+The Transition Table
+ 	0	 	1	 	2	 	3	 	4	 	5	 	6	 	7	 	8	 	9	 	10	 	
+0	6	|	0	|	1	|	2	|	3	|	5	|	7	|	8	|	9	|	10	|	10	|	
 1	1	|	2	|	3	|	4	|	5	|	5	|	0	|	6	|	7	|	8	|	9	|	
 
 
