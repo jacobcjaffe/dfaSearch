@@ -158,12 +158,32 @@ CalcResults* dfa::CalculateNumCorrect()
 			mpz_get_d(numCorrect), mpz_get_d(numCorrectlyAcc),
 			mpz_get_d(numIncorrectlyAcc));
 	}
-	mpz_clears(/*numCorrect, numCorrectlyAcc, numIncorrectlyAcc,*/ two, power, NULL);
+	mpz_clears(two, power, NULL);
 	CalcResults* results = new CalcResults();
 	*results->Correct = *numCorrect;
 	*results->CorrectlyAcc = *numCorrectlyAcc;
 	*results->IncorrectlyAcc = *numIncorrectlyAcc;
     return results;
+}
+
+double dfa::CalculateRatio() {
+	mpf_t dividend;
+	mpf_t divisor;
+	mpz_t two;
+	mpz_t power;
+	char* temp = new char[15];
+	mpz_init_set_ui(two, 2);
+	mpz_pow_ui(power, two, lengthStr);
+	mpz_get_str(temp, 10, power);
+	mpf_init_set_str(divisor, temp, 10);
+	mpz_get_str(temp, 10, Correct);
+	mpf_init_set_str(dividend, temp, 10);
+	mpf_div(dividend, dividend, divisor);
+	ratio = mpf_get_d(dividend);
+	mpz_clears(two, power, NULL);
+	mpf_clears(dividend, divisor, NULL);
+	delete []temp;
+	return ratio;
 }
 
 // brute force check the number of accepted strings of length lengthStr
@@ -230,6 +250,8 @@ double dfa::OptimizeAcceptingStates(){
 	this->numAcceptingStates = this->acceptingStates.size();
 	CalcResults* results = this->CalculateNumCorrect();
 	numCorrectlyIdentified = mpz_get_d(results->Correct);
+	
+
 	delete results;
 	return numCorrectlyIdentified;
 }
@@ -408,6 +430,10 @@ double dfa::GetNumCorrectStrings() {
     return numCorrectlyIdentified;
 }
 
+mpz_t* dfa::GetNumCorrectStringsMPZ() {
+	return &Correct;
+}
+
 /// <summary>
 /// Get method for the string length.
 /// </summary>
@@ -537,6 +563,7 @@ dfa::~dfa()
             delete tableAcceptedStr[i];
         }
     }
+	//mpz_clear(Correct);
 }
 
 void dfa::Scramble() {

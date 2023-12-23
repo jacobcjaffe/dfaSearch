@@ -36,6 +36,8 @@ private:
     std::string fileName;
     double numCorrectlyIdentified;
 	bool debug = false;
+	double ratio;
+	mpz_t Correct;
 
 public :
     dfa();
@@ -45,6 +47,7 @@ public :
 	CalcResults* CalculateNumCorrect();
     double CalculateNumCorrectBrute();
 	double OptimizeAcceptingStates();
+	double CalculateRatio();
     bool CheckMembership(std::vector<bool> &bits);
     bool incrementBitVec(std::vector<bool>& bits);
 	void Scramble();
@@ -74,6 +77,7 @@ public :
     void SetLengthStr(int newLength);
     double GetNumCorrectStrings();
     int GetNumStates();
+	mpz_t* GetNumCorrectStringsMPZ();
 
     void WriteToDisk(std::string fileName);
 

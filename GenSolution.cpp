@@ -131,7 +131,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 	dfa* temp = new dfa();
 	temp->fromFile("test.txt");
 
-	for (int testNum = 3; testNum < 4.5 * numStates; testNum+=2) {
+	for (int testNum = 3; testNum < 4 * numStates; testNum+=2) {
 		x.push_back(testNum);
 		std::cout << "lengthStr: " << testNum << std::endl;
 		GenerateGenericTest("test.txt", testNum, numStates);
@@ -240,6 +240,7 @@ void GenSolution::ParallelExhaustiveSearch(int numStates) {
 		+ " States";
 	std::cout << title << std::endl;
 	PlotResults(x, y, title);
+	out.close();
 }
 
 void GenSolution::PlotResults(std::vector<double>& x, std::vector<double>& y, std::string t)
